@@ -1,0 +1,25 @@
+{
+  "allocationMethod": "unit",
+  "additionalCosts": 180,
+  "discounts": 75,
+  "lines": [
+    {
+      "sku": "FLOWER-BULK-001",
+      "description": "Bulk Flower",
+      "quantity": 1,
+      "unitCost": 800
+    },
+    {
+      "sku": "PREROLL-240",
+      "description": "Pre-Rolls",
+      "quantity": 240,
+      "unitCost": 2.5
+    },
+    {
+      "sku": "EIGHTH-036",
+      "description": "Eighths",
+      "quantity": 36,
+      "unitCost": 12
+    }
+  ]
+}
