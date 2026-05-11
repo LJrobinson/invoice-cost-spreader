@@ -211,6 +211,46 @@ Runs the CLI and writes a saved run folder with `spread-result.json` and `moby-r
 
 ## Data Model
 
+### MOBY JSON Sidecar Export
+
+```bash
+npm run import -- --csv samples/korona-export-money-example.csv --map samples/korona-mapping.json --run-dir output/runs --run-id moby-sidecar-test-001 --moby-json output/runs/moby-sidecar-test-001/moby-import.json
+```
+
+Adds:
+
+```txt
+output/runs/moby-sidecar-test-001/moby-import.json
+```
+
+The sidecar is the portable bridge artifact for MOBY-aware consumers such as `trackingthc.com/import-review`.
+
+---
+
+## MOBY-compatible output
+
+`invoice-cost-spreader` fits into the MOBY ecosystem as a costing adapter: it spreads invoice-level costs, discounts, and landed-cost adjustments into reviewable run artifacts that other TrackingTHC tools can inspect.
+
+Use `--run-dir` when you want the normal CLI output saved as MOBY-compatible artifacts. Default stdout behavior stays unchanged; explicit run-directory mode writes the spread result and run manifest to disk.
+
+```bash
+npm run spread -- --invoice samples/vendor-invoice-example.csv --packages samples/pos-export-example.csv --run-dir output/runs --run-id sample-invoice-spread-001
+```
+
+Example run output:
+
+```txt
+output/runs/sample-invoice-spread-001/
+  spread-result.json
+  moby-run-manifest.json
+```
+
+`spread-result.json` is the module's normal result artifact. `moby-run-manifest.json` describes the run, sources, artifacts, warnings, and summary counts so committed sample manifests can be displayed in TrackingTHC MOBY Mission Control at `/moby-runs`.
+
+This module does not replace accounting or POS systems. It creates reviewable costing artifacts that help teams compare, audit, and explain how invoice costs were allocated.
+
+---
+
 ### InvoiceCostInput
 
 ```ts
