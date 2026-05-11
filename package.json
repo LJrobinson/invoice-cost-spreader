@@ -11,6 +11,9 @@
   "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "dependencies": {
+    "moby-core": "file:../moby-core"
+  },
   "devDependencies": {
     "tsx": "^4.21.0",
     "typescript": "^6.0.3",

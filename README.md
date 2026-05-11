@@ -42,6 +42,8 @@ This tool helps turn invoice-level adjustments into structured, line-level lande
 - Calculate adjusted line cost
 - Calculate adjusted unit cost
 - Return structured JSON output
+- Write optional run-directory JSON artifacts
+- Emit a MOBY-compatible run manifest sidecar in run-directory mode
 - Warn when discounts exceed additional costs
 - Includes automated tests with Vitest
 - Runs from the command line
@@ -169,6 +171,24 @@ npm run spread -- examples/invoice-input.json --json
 
 The CLI reads an invoice JSON file and outputs a structured landed-cost result.
 
+By default, the CLI is stdout-only. It does not create files unless `--run-dir` is provided.
+
+Write a saved run folder:
+
+```bash
+npm run spread -- examples/invoice-input.json --json --run-dir output/runs --run-id invoice-run-001
+```
+
+Creates:
+
+```txt
+output/runs/invoice-run-001/
+  spread-result.json
+  moby-run-manifest.json
+```
+
+If `--run-id` is omitted, the CLI generates a timestamp-based run ID. The `moby-run-manifest.json` file follows the `MobyRunManifest` contract from `moby-core` and describes the invoice input, spread result artifact, warning metadata, and summary counts.
+
 ## Scripts
 
 ```bash
@@ -182,6 +202,12 @@ npm run spread -- examples/invoice-input.json --json
 ```
 
 Runs the invoice cost spreader CLI.
+
+```bash
+npm run spread -- examples/invoice-input.json --json --run-dir output/runs --run-id invoice-run-001
+```
+
+Runs the CLI and writes a saved run folder with `spread-result.json` and `moby-run-manifest.json`.
 
 ## Data Model
 
@@ -221,6 +247,28 @@ export type SpreadResult = {
   warnings: string[];
 };
 ```
+
+### Run Directory Artifacts
+
+When `--run-dir` is used, `spread-result.json` preserves the same `SpreadResult` JSON shape printed to stdout.
+
+`moby-run-manifest.json` is additive and includes:
+
+```txt
+schemaVersion
+runId
+runType
+generatedBy
+generatedAt
+status
+sources
+artifacts
+warnings
+summary
+metadata
+```
+
+Warnings remain `string[]` in `SpreadResult`. The MOBY run manifest adapts those strings into `MobyWarning` objects with coarse stable codes and review metadata for downstream tooling.
 
 ## Example Use Cases
 

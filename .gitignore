@@ -7,3 +7,5 @@ coverage/
 npm-debug.log*
 .vitest/
 .DS_Store
+output/
+runs/
